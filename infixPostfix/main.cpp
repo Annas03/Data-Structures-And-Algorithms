@@ -78,8 +78,9 @@ int main(){
                         postfix += get_opt(s.top());
                         s.pop();
                     }
-                    else{
+                    else if((infix[i] < s.top()) || (s.empty())){
                         s.push(infix[i]);
+                        break;
                     }
                 }
             }
