@@ -33,6 +33,7 @@ int opt_val(char opt){
         return 5;
         break;
     default:
+        return 0;
         break;
     }
 
@@ -56,6 +57,7 @@ char get_opt(int val){
         return '^';
         break;
     default:
+        return ' ';
         break;
     }
 }
@@ -85,7 +87,15 @@ int main(){
                 }
             }
         }
-    } 
+    }
+    while(true){
+        if(s.empty()){
+            break;
+        }
+        postfix += s.top();
+        s.pop();
+    }
+    cout<<postfix;
     return 0;
 }
     
