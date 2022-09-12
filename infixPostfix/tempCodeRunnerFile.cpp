@@ -1,1 +1,1 @@
-this->top -= 1;
+cout<<postfix;

@@ -67,22 +67,22 @@ int main(){
     cin>>infix;
     stack<int>s;
     for(int i = 0; i<infix.length() ; i++){
-        if(isNumber(char(infix[i]))){
+        if(isNumber(infix[i])){
             postfix+=infix[i];
         }
         else{
             if(s.empty()){
-                s.push(infix[i]);
+                s.push(opt_val(infix[i]));
             }
             else{
                 while(true){
-                    if(infix[i] >= s.top()){
+                    if((opt_val(infix[i]) > s.top()) || (s.empty())){
+                        s.push(opt_val(infix[i]));
+                        break;
+                    }
+                    else if(opt_val(infix[i]) <= s.top()){
                         postfix += get_opt(s.top());
                         s.pop();
-                    }
-                    else if((infix[i] < s.top()) || (s.empty())){
-                        s.push(infix[i]);
-                        break;
                     }
                 }
             }
@@ -92,7 +92,7 @@ int main(){
         if(s.empty()){
             break;
         }
-        postfix += s.top();
+        postfix += get_opt(s.top());
         s.pop();
     }
     cout<<postfix;
