@@ -63,27 +63,22 @@ char get_opt(int val){
 }
 int main(){
     string infix, postfix;
-    cout<<"infix: ";
+    cout<<"infix:";
     cin>>infix;
     stack<int>s;
     for(int i = 0; i<infix.length() ; i++){
         if(isNumber(infix[i])){
-            postfix+=infix[i];
+            postfix += infix[i];
         }
         else{
-            if(s.empty()){
-                s.push(opt_val(infix[i]));
-            }
-            else{
-                while(true){
-                    if((opt_val(infix[i]) > s.top()) || (s.empty())){
-                        s.push(opt_val(infix[i]));
-                        break;
-                    }
-                    else if(opt_val(infix[i]) <= s.top()){
-                        postfix += get_opt(s.top());
-                        s.pop();
-                    }
+            while(true){
+                if(s.empty() || (opt_val(infix[i]) > s.top())){
+                    s.push(opt_val(infix[i]));
+                    break;
+                }
+                else if(opt_val(infix[i]) <= s.top()){
+                    postfix += get_opt(s.top());
+                    s.pop();
                 }
             }
         }
