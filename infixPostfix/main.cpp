@@ -32,11 +32,13 @@ int opt_val(char opt){
     case '^':
         return 5;
         break;
+    case '(':
+        return 6;
+        break;
     default:
         return 0;
         break;
     }
-
 }
 char get_opt(int val){
     switch (val)
@@ -56,6 +58,9 @@ char get_opt(int val){
     case 5:
         return '^';
         break;
+    case 6:
+        return '(';
+        break;
     default:
         return ' ';
         break;
@@ -66,13 +71,34 @@ int main(){
     cout<<"infix:";
     cin>>infix;
     stack<int>s;
+    int n_brackets = 0;
     for(int i = 0; i<infix.length() ; i++){
         if(isNumber(infix[i])){
             postfix += infix[i];
         }
-        else{
+        else if(infix[i] == ')'){
+            if(n_brackets == 0){
+                cout<<"Invalid Expression";
+                break;
+            }
+            n_brackets--;
             while(true){
-                if(s.empty() || (opt_val(infix[i]) > s.top())){
+                if(get_opt(s.top()) == '('){
+                    s.pop();
+                    break;
+                }
+                else{
+                    postfix += get_opt(s.top());
+                    s.pop();
+                }
+            }
+        }
+        else{
+            if(infix[i] == '('){
+                n_brackets++;
+            }
+            while(true){
+                if(s.empty() || opt_val(infix[i]) > s.top() || get_opt(s.top()) == '('){
                     s.push(opt_val(infix[i]));
                     break;
                 }
@@ -81,14 +107,20 @@ int main(){
                     s.pop();
                 }
             }
+
         }
     }
-    while(true){
-        if(s.empty()){
-            break;
+    if(n_brackets != 0){
+        cout<<"Invalid Expression";
+    }
+    else{
+        while(true){
+            if(s.empty()){
+                break;
+            }
+            postfix += get_opt(s.top());
+            s.pop();
         }
-        postfix += get_opt(s.top());
-        s.pop();
     }
     cout<<postfix;
     return 0;
