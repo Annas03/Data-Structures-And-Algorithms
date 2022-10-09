@@ -9,15 +9,14 @@ class node{
 
         node(int val){
             this->val = val;
-            left_child = NULL;
-            right_child = NULL;
+            this->left_child = NULL;
+            this->right_child = NULL;
         }
-        void insertNode(node* root_Node, int val){
-            if(root_Node.val > val){
-               insertNode(root_Node.left_child, val); 
-            }
-            else if(root_Node.val < val){
-                insertNode(root_Node.right_child, val);
-            }
+        node(){
+            this->left_child = NULL;
+            this->right_child = NULL;
         }
+        // ~node(){
+        //     delete left_child, right_child;
+        // }
 };
