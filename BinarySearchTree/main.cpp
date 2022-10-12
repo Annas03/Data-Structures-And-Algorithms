@@ -7,6 +7,8 @@ node* SearchNode(node* root_Node, int val);
 node* deleteNode(node* root_Node, int val);
 node* MaximumKeyNode(node* root_Node);
 void inorder_Traversal(node* root_Node);
+void preorder_Traversal(node* root_Node);
+void postorder_Traversal(node* root_Node);
 
 int main(){
     int arr[] = {8,3,1,6,7,10,14,4};
@@ -14,7 +16,8 @@ int main(){
     for(int i = 0; i<8; i++){
         root_Node = insertNode(root_Node, arr[i]);
     }
-    inorder_Traversal(root_Node);
+    // inorder_Traversal(root_Node);
+    postorder_Traversal(root_Node);
     return 0;
 }
 
@@ -138,5 +141,19 @@ void inorder_Traversal(node* root_Node){
     }
     if(root_Node->right_child != NULL){
         inorder_Traversal(root_Node->right_child);
+    }
+}
+void preorder_Traversal(node* root_Node){
+    if(root_Node != NULL){
+        cout<<root_Node->val<<" ";
+        preorder_Traversal(root_Node->left_child);
+        preorder_Traversal(root_Node->right_child);
+    }
+}
+void postorder_Traversal(node* root_Node){
+    if(root_Node != NULL){
+        postorder_Traversal(root_Node->left_child);
+        postorder_Traversal(root_Node->right_child);
+        cout<<root_Node->val<<" ";
     }
 }
