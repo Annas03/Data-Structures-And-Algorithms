@@ -23,6 +23,8 @@ int main(){
     root = push(root, 1);
     root = push(root, 2);
     root = push(root, 3);
+    root = pop(root);
+    root = pop(root);
     display(root);
 
    return 0; 
@@ -48,8 +50,8 @@ void display(node* root){
 node* pop(node* root){
     if(root->next == NULL){
         delete root;
+        return NULL;
     }
-    root = pop(root->next);
-    root->next = 
-
+    root->next = pop(root->next);
+    return root;
 }
