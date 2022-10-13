@@ -3,41 +3,66 @@ using namespace std;
 
 class stack{
     public:
-    int top = -1;
+    int top = 0;
     int *ptr;
     stack(){
-        ptr = new int(top+1);
+        this->ptr = NULL;
     }
 
     void push(int val){
+        if(this->top == 0){
+            this->ptr = new int[this->top+1];
+            this->ptr[0] = val;
+            top++;
+            return;
+        }
+        int temp_arr[top];
+
+        // copying values to temp array
+        for(int i=0; i<top; i++){
+            temp_arr[i] = this->ptr[i];
+        }
+        delete[] ptr;
+
         this->top += 1;
-        ptr = newArr(ptr, top, val);
+        this->ptr = new int[top];
+
+        //assigning values to new array
+        for(int i=0; i<top-1; i++){
+            this->ptr[i] = temp_arr[i];
+        }
+        this->ptr[top-1] = val;
+        // ptr = newArr(ptr, top, val);
 
     }
     int pop(){
-        int t_val = ptr[top];
-        int* p_ptr = new int;
-        p_ptr = ptr + top;
-        p_ptr = nullptr;
-        // this->top -= 1;
-        return t_val;
-    }
-    int* newArr(int* ptr, int top, int val){
+
         if(top == 0){
-            *ptr = val;
-            return ptr;
+            cout<<"Stack is empty"<<endl;
+            return;
         }
-        int* t_ptr = new int(top);
-        for(int i = 0; i < top; i++){
-            t_ptr[i] = ptr[i];
+        int temp_arr[top-1];
+        int temp;
+
+        // copying values to temp array
+        for(int i=0; i<top-1; i++){
+            temp_arr[i] = this->ptr[i];
         }
-        t_ptr[top] = val;
-        delete ptr;
-        return t_ptr;
+        temp = ptr[top-1];
+        delete[] ptr;
+
+        this->top -= 1;
+        this->ptr = new int[top];
+
+        //assigning values to new array
+        for(int i=0; i<top; i++){
+            this->ptr[i] = temp_arr[i];
+        }
+        return temp;
     }
     void display(){
-        for(int i = 0; i <= this->top; i++){
-            cout<<ptr[i]<<endl;
+        for(int i = 0; i < this->top; i++){
+            cout<<this->ptr[i]<<endl;
         }
     }
     ~stack(){
@@ -52,7 +77,11 @@ int main(){
     s.push(2);
     s.push(3);
     cout<<s.pop()<<endl;
+    cout<<s.pop()<<endl;
+    cout<<s.pop()<<endl;
     s.display();
+    cout<<s.top;
+
 
     return 0;
 }
