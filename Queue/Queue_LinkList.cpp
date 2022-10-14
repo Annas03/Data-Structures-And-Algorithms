@@ -20,13 +20,15 @@ void display(node* root);
 
 int main(){
     node* root;
+    root = enqueue(root, 1);
+    root = enqueue(root, 2);
+    root = enqueue(root, 3);
     root = enqueue(root, 4);
-    root = enqueue(root, 6);
     root = dequeue(root);
+    display(root);
 
     return 0;
 }
-
 node* enqueue(node* root, int val){
     node* temp_node;
     temp_node = root;
@@ -40,7 +42,13 @@ node* dequeue(node* root){
     }
     else{
         delete root;
+        return NULL;
     }
     return root;
-
+}
+void display(node* root){
+    while(root != NULL){
+        cout<<root->val<<" ";
+        root = root->next;
+    }
 }
