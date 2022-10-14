@@ -16,8 +16,9 @@ int main(){
     for(int i = 0; i<8; i++){
         root_Node = insertNode(root_Node, arr[i]);
     }
-    // inorder_Traversal(root_Node);
-    postorder_Traversal(root_Node);
+    root_Node = deleteNode(root_Node, 7);
+    root_Node = deleteNode(root_Node, 6);
+    inorder_Traversal(root_Node);
     return 0;
 }
 
@@ -54,52 +55,30 @@ node* deleteNode(node* root_Node, int val){
     node* temp;
     if(root_Node->val != val){
         node* Parent_Node = SearchNode(root_Node, val);
+        node*& Child_Node = (Parent_Node->left_child->val == val) ? Parent_Node->left_child : Parent_Node->right_child;
         if(Parent_Node == 0){
             cout<<"Key not found"<<endl;
             return NULL;
         }
-        if(Parent_Node->left_child->val == val){
-            if(Parent_Node->left_child->left_child == NULL && Parent_Node->left_child->right_child == NULL){
-                delete Parent_Node->left_child;
-                Parent_Node->left_child = NULL;
+        if(Child_Node->left_child == NULL && Child_Node->right_child == NULL){
+                delete Child_Node;
+                Child_Node = NULL;
             }
-            else if(Parent_Node->left_child->left_child != NULL && Parent_Node->left_child->right_child == NULL){
-                temp = Parent_Node->left_child->left_child;
-                delete Parent_Node->left_child;
-                Parent_Node->left_child = temp;
+            else if(Child_Node->left_child != NULL && Child_Node->right_child == NULL){
+                temp = Child_Node->left_child;
+                delete Child_Node;
+                Child_Node = temp;
             }
-            else if(Parent_Node->left_child->right_child != NULL && Parent_Node->left_child->left_child == NULL){
-                temp = Parent_Node->left_child->right_child;
-                delete Parent_Node->left_child;
-                Parent_Node->left_child = temp;
+            else if(Child_Node->right_child != NULL && Child_Node->left_child == NULL){
+                temp = Child_Node->right_child;
+                delete Child_Node;
+                Child_Node = temp;
             }
-            else if(Parent_Node->left_child->left_child != NULL && Parent_Node->left_child->right_child != NULL){
-                int temp_val = MaximumKeyNode(Parent_Node->left_child->left_child)->val;
-                Parent_Node->left_child = deleteNode(Parent_Node->left_child, MaximumKeyNode(Parent_Node->left_child->left_child)->val);
-                Parent_Node->left_child->val = temp_val;
+            else if(Child_Node->left_child != NULL && Child_Node->right_child != NULL){
+                int temp_val = MaximumKeyNode(Child_Node->left_child)->val;
+                Child_Node = deleteNode(Child_Node, MaximumKeyNode(Child_Node->left_child)->val);
+                Child_Node->val = temp_val;
             }
-        }
-        else if(Parent_Node->right_child->val == val){
-            if(Parent_Node->right_child->left_child == NULL && Parent_Node->right_child->right_child == NULL){
-                delete Parent_Node->right_child;
-                Parent_Node->right_child = NULL;
-            }
-            else if(Parent_Node->right_child->left_child != NULL && Parent_Node->right_child->right_child == NULL){
-                temp = Parent_Node->right_child->left_child;
-                delete Parent_Node->right_child;
-                Parent_Node->right_child = temp;
-            }
-            else if(Parent_Node->right_child->right_child != NULL && Parent_Node->right_child->left_child == NULL){
-                temp = Parent_Node->right_child->right_child;
-                delete Parent_Node->right_child;
-                Parent_Node->right_child = temp;
-            }
-            else if(Parent_Node->right_child->left_child != NULL && Parent_Node->right_child->right_child != NULL){
-                int temp_val = MaximumKeyNode(Parent_Node->right_child->left_child)->val;
-                Parent_Node->right_child = deleteNode(Parent_Node->right_child, MaximumKeyNode(Parent_Node->right_child->left_child)->val);
-                Parent_Node->right_child->val = temp_val;
-            }
-        }
     }
     else{
         if(root_Node->left_child == NULL && root_Node->right_child == NULL){
