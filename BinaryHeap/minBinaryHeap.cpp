@@ -23,7 +23,7 @@ class MinHeap{
         }
         else{
             while(ptr[index/2] > val || index > 1){
-                if(ptr[index/2] < val){
+                if(index/2 == 1){
                     ptr[index] = ptr[index/2];
                     ptr[index/2] = val;
                     break;
@@ -41,14 +41,14 @@ int main(){
     MinHeap h(5);
     h.InsertData(11);
     h.InsertData(3);
-    // h.InsertData(2);
-    // h.InsertData(1);
-    // h.InsertData(15);
+    h.InsertData(2);
+    h.InsertData(1);
+    h.InsertData(15);
     cout<<h.ptr[1]<<endl;
     cout<<h.ptr[2]<<endl;
-    // cout<<h.ptr[3]<<endl;
-    // cout<<h.ptr[4]<<endl;
-    // cout<<h.ptr[5]<<endl;
+    cout<<h.ptr[3]<<endl;
+    cout<<h.ptr[4]<<endl;
+    cout<<h.ptr[5]<<endl;
 
     return 0;
 }
