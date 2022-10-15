@@ -16,8 +16,8 @@ int main(){
     for(int i = 0; i<8; i++){
         root_Node = insertNode(root_Node, arr[i]);
     }
-    root_Node = deleteNode(root_Node, 7);
-    root_Node = deleteNode(root_Node, 6);
+    root_Node = deleteNode(root_Node, 8);
+    // root_Node = deleteNode(root_Node, 6);
     inorder_Traversal(root_Node);
     return 0;
 }
@@ -53,53 +53,34 @@ node* SearchNode(node* root_Node,int val){
 
 node* deleteNode(node* root_Node, int val){
     node* temp;
+    node* Parent_Node;
     if(root_Node->val != val){
-        node* Parent_Node = SearchNode(root_Node, val);
-        node*& Child_Node = (Parent_Node->left_child->val == val) ? Parent_Node->left_child : Parent_Node->right_child;
+        Parent_Node = SearchNode(root_Node, val);
         if(Parent_Node == 0){
             cout<<"Key not found"<<endl;
             return NULL;
         }
-        if(Child_Node->left_child == NULL && Child_Node->right_child == NULL){
-                delete Child_Node;
-                Child_Node = NULL;
-            }
-            else if(Child_Node->left_child != NULL && Child_Node->right_child == NULL){
-                temp = Child_Node->left_child;
-                delete Child_Node;
-                Child_Node = temp;
-            }
-            else if(Child_Node->right_child != NULL && Child_Node->left_child == NULL){
-                temp = Child_Node->right_child;
-                delete Child_Node;
-                Child_Node = temp;
-            }
-            else if(Child_Node->left_child != NULL && Child_Node->right_child != NULL){
-                int temp_val = MaximumKeyNode(Child_Node->left_child)->val;
-                Child_Node = deleteNode(Child_Node, MaximumKeyNode(Child_Node->left_child)->val);
-                Child_Node->val = temp_val;
-            }
     }
-    else{
-        if(root_Node->left_child == NULL && root_Node->right_child == NULL){
-            delete root_Node;
-            root_Node = NULL;
-        }
-        else if(root_Node->left_child != NULL && root_Node->right_child == NULL){
-            temp = root_Node->left_child;
-            delete root_Node;
-            root_Node = temp;
-        }
-        else if(root_Node->right_child != NULL && root_Node->left_child == NULL){
-            temp = root_Node->right_child;
-            delete root_Node;
-            root_Node = temp;
-        }
-        else if(root_Node->left_child != NULL && root_Node->right_child != NULL){
-            int temp_val = MaximumKeyNode(root_Node->left_child)->val;
-            root_Node = deleteNode(root_Node, MaximumKeyNode(root_Node->left_child)->val);
-            root_Node->val = temp_val;
-        }
+    node*& Child_Node = (root_Node->val == val) ? root_Node : ((Parent_Node->left_child->val == val) ? Parent_Node->left_child : Parent_Node->right_child);
+
+    if(Child_Node->left_child == NULL && Child_Node->right_child == NULL){
+        delete Child_Node;
+        Child_Node = NULL;
+    }
+    else if(Child_Node->left_child != NULL && Child_Node->right_child == NULL){
+        temp = Child_Node->left_child;
+        delete Child_Node;
+        Child_Node = temp;
+    }
+    else if(Child_Node->right_child != NULL && Child_Node->left_child == NULL){
+        temp = Child_Node->right_child;
+        delete Child_Node;
+        Child_Node = temp;
+    }
+    else if(Child_Node->left_child != NULL && Child_Node->right_child != NULL){
+        int temp_val = MaximumKeyNode(Child_Node->left_child)->val;
+        Child_Node = deleteNode(Child_Node, MaximumKeyNode(Child_Node->left_child)->val);
+        Child_Node->val = temp_val;
     }
     return root_Node;
 }
