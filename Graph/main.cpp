@@ -9,6 +9,7 @@ class Graph{
     int** arr;
     Graph(string filename){
         bool neg_vrt = false;
+        bool inv_inp = false;
         string myText;
         string r,c;
         int ind;
@@ -16,11 +17,11 @@ class Graph{
         int i = 0;
         while (getline (MyReadFile, myText)) {
             if(myText == ""){
-                cout<<"Invalid Input"<<endl;
+                inv_inp = true;
             }
             if(i == 0){
                 if(stoi(myText) < 0){
-                    cout<<"Invalid Input"<<endl;
+                    inv_inp = true;
                     break;
                 }
                 v = stoi(myText);
@@ -28,7 +29,7 @@ class Graph{
             }
             else if(i == 1){
                 if(stoi(myText) < 0){
-                    cout<<"Invalid Input";
+                    inv_inp = true;
                     break;
                 }
                 e = stoi(myText);
@@ -49,12 +50,18 @@ class Graph{
                     }
                 }
                 if(neg_vrt){
-                    cout<<"Invalid Input"<<endl;
+                    inv_inp = true;
                     break;
                 }
                 arr[stoi(r)][stoi(c)] = 1;
             }
             i++;
+        }
+        if((i-1) > 1+e || (i-1) < 1+e){
+            inv_inp = true;
+        }
+        if(inv_inp){
+            cout<<"Invalid Input"<<endl;
         }
         MyReadFile.close();
     }
