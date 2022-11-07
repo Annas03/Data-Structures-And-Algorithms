@@ -10,9 +10,9 @@ class Graph{
     Graph(string filename){
         bool neg_vrt = false;
         bool inv_inp = false;
+        bool isWeighted;
         string myText;
         string r,c;
-        int ind;
         ifstream MyReadFile(filename);
         int i = 0;
         while (getline (MyReadFile, myText)) {
@@ -35,14 +35,24 @@ class Graph{
                 e = stoi(myText);
             }
             else if(i >= 2 && i < 2+e){
-                for(int j=0; j < myText.length(); j++){
+                int ind = 0;
+                string t_var;
+                for(int j=0; j <= myText.length(); j++){
                     if(myText[j] == ','){
-                        r = myText.substr(0,j);
+                        if(ind == 0){r = myText.substr(ind,j-ind);}
+                        else{c =myText.substr(ind,j-ind);isWeighted = true;}
                         ind = j+1;
                     }
-                    else if(j == myText.length()-1){
-                        if(j != ind){c = myText.substr(ind, j-ind);}
-                        else{c = myText.back();};
+                    else if(j == myText.length()){
+                        if(isWeighted){
+                            if(j != ind){t_var = myText.substr(ind, j-ind);}
+                            else{t_var = myText.back();}
+                            continue;
+                        }
+                        else{  
+                            if(j != ind){c = myText.substr(ind, j-ind);}
+                            else{c = myText.back();};
+                        }
                     }
                     else if(myText[j] == '-'){
                         neg_vrt = true;
@@ -53,7 +63,8 @@ class Graph{
                     inv_inp = true;
                     break;
                 }
-                arr[stoi(r)][stoi(c)] = 1;
+                if(isWeighted){arr[stoi(r)][stoi(c)] = stoi(t_var);}
+                else{arr[stoi(r)][stoi(c)] = 1;}
             }
             i++;
         }
