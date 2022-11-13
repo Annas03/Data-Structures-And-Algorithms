@@ -103,26 +103,6 @@ void graph::InitializeMatrix(){
         }
     }
 }
-void graph::prims_MST(){
-    int rem_ver[v];
-    for(int i=0;i<v;i++){
-        rem_ver[i] = i;
-    }
-
-    int curr_Vertex = 0;
-    while(v)
-
-}
-
-
-
-
-
-
-
-
-
-
 graph::~graph(){
     for(int i=0; i<v; i++){
         delete[] arr[i];
