@@ -36,12 +36,10 @@ void HashTable::Insert(int* arr, int lenght){
             else{
                 hash_table[hash_index] = arr[i];
             }
-
         }
         else{
             hash_size*=2;
             IncreasingHashTable();
-            // ReInitializing Hahtable with new hashsize
             i--;
         }
         load_factor = static_cast<float>(filledCells())/static_cast<float>(hash_size);
@@ -70,13 +68,10 @@ void HashTable::IncreasingHashTable(){
     }
     delete[] hash_table;
     hash_table = new int[hash_size];
-      for(int i=0; i<hash_size/2; i++){
-        hash_table[i] = temp_arr[i];
+      for(int i=0; i<hash_size; i++){
+        if(i<hash_size/2){
+            hash_table[i] = temp_arr[i];
+        }
+        else{hash_table[i] = -1;}
     }
-
-    // for(int i=0; i<hash_size; i++){
-    //     cout<<hash_table[i]<<" ";
-    // }
-    // cout<<endl;
-
 }
