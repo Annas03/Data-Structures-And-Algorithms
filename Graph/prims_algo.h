@@ -15,40 +15,43 @@ void prims_MST(graph& g){
             ver.push_back(curr_Vertex);
             InitializingEdges(rem_edges,curr_Vertex, g.e*2, g.arr);
             Modifyrem_edges(rem_edges,edges);
-            min_edge(g.arr, curr_Vertex, rem_edges, ver);
+            min_edge(g.arr, curr_Vertex, rem_edges, ver,edges);
             // edges.erase(edges.begin() + min_edge(g.arr, g.v, curr_Vertex, edges, ver), edges.begin() + min_edge(g.arr, g.v, curr_Vertex, edges, ver) + 1);
         } 
     }
 }
 
-void min_edge(int** arr,int& curr_Vertex, vector<int>& rem_edges, vector<int>& ver){
+int min_edge(int** arr,int& curr_Vertex, vector<int>& rem_edges, vector<int>& ver, vector<int>& edges){
     // find minimum edges coordinates
     // Update curr_Vertex
     int r=0;
     int temp;
-    int c=1;
+    int c=r+1;
     for(int i=0; i<rem_edges.size(); i+=2){
         if(arr[rem_edges[i]][rem_edges[i+1]] < arr[r][c]){
             temp = SearchVer(ver, rem_edges[i], rem_edges[i+1]);
             if(temp != -1){
                 r = i;
-                c = i+1;
                 curr_Vertex = temp;
             }
         }
         else if(i+2 >rem_edges.size() && r==0){
-            temp = SearchVer(ver, rem_edges[i], rem_edges[i+1]);
+            temp = SearchVer(ver, rem_edges[r], rem_edges[c]);
             if(temp != -1){
                 curr_Vertex = temp;
             }
         }
     }
+    edges.push_back(rem_edges[r]);
+    edges.push_back(rem_edges[c]);
 }
 
-void modifyrem_edges(vector<int>& rem_edges, vector<int>& edges){
+void Modifyrem_edges(vector<int>& rem_edges, vector<int>& edges){
     for(int i=0; i<rem_edges.size()/2; i+=2){
         for(int j=0; j<edges.size()/2; j+=2){
-            if()
+            if(rem_edges[i] == edges[j] && rem_edges[i+1] == edges[j+1]){
+                rem_edges.erase(rem_edges.begin()+i, rem_edges.begin()+1+i);
+            }
         }
     }
 }
