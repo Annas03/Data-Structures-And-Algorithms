@@ -13,15 +13,12 @@ void prims_MST(graph& g){
         if(!SearchVer(ver, curr_Vertex)){
             ver.push_back(curr_Vertex);
             InitializingEdges(edges,curr_Vertex, g.e*2, g.arr);
-            // smallest edge find
-            min_edge(g.arr, g.v, curr_Vertex, edges, ver);
-            // save the remaining edges
-            // change curr_Vertex value to selected edge
-        }
+            edges.erase(edges.begin() + min_edge(g.arr, g.v, curr_Vertex, edges, ver), edges.begin() + min_edge(g.arr, g.v, curr_Vertex, edges, ver) + 1);
+        } 
     }
 }
 
-void min_edge(int** arr, int v, int& curr_Vertex, vector<int>& edges, vector<int>& ver){
+int min_edge(int** arr, int v, int& curr_Vertex, vector<int>& edges, vector<int>& ver){
     int r=0;
     int temp;
     int c=1;
@@ -41,12 +38,11 @@ void min_edge(int** arr, int v, int& curr_Vertex, vector<int>& edges, vector<int
             }
         }
     }
-    edges.erase(edges[r]);
-
+    return r;
 }
 
 void InitializingEdges(vector<int>& edges, int curr_Vertex, int e, int** arr){
-    for(int i=0; i<e; i++){
+    for(int i=0; i<e; i+=2){
         if(i <e/2){
             edges.push_back(curr_Vertex);
             edges.push_back(i);
