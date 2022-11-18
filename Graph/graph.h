@@ -13,11 +13,11 @@ class graph{
     void InitializeMatrix();
     void prims_MST();
     void min_edge(int& curr_Vertex, vector<int>& rem_edges, vector<int>& ver, vector<int>& edges);
-    void Modifyrem_edges(vector<int>& rem_edges, vector<int>& edges);
-    void InitializingEdges(vector<int>& rem_edges, int curr_Vertex, int e);
+    void Modifyrem_edges(vector<int>& rem_edges, vector<int>& edges, vector<int>& ver);
+    void InitializingEdges(vector<int>& rem_edges,vector<int>&edges, int curr_Vertex, int e);
     bool SearchVer(vector<int>& arr, int curr_vertex);
     int new_Ver(vector<int>& arr, int ver1, int ver2);
-    bool SearchEdge(int ver1, int ver2, vector<int>& rem_edge);
+    bool SearchEdge(int ver1, int ver2,vector<int>& rem_edge,vector<int>&edge);
     ~graph();
 };
 
@@ -117,16 +117,7 @@ void graph::prims_MST(){
     int curr_Vertex = 0;
     ver.push_back(curr_Vertex);
     while(ver.size() != v){
-        InitializingEdges(rem_edges,curr_Vertex, e*2);
-        for(int j=0; j<rem_edges.size(); j++){
-            cout<<rem_edges[j];
-        }
-        cout<<endl;
-        Modifyrem_edges(rem_edges,edges);
-        for(int k=0; k<edges.size(); k++){
-            cout<<edges[k];
-        }
-        cout<<endl;
+        InitializingEdges(rem_edges,edges,curr_Vertex, v*2);
         min_edge(curr_Vertex, rem_edges, ver,edges);
         ver.push_back(curr_Vertex);
     }
@@ -137,59 +128,49 @@ void graph::prims_MST(){
 }
 void graph::min_edge(int& curr_Vertex, vector<int>& rem_edges, vector<int>& ver, vector<int>& edges){
     int r=0;
-    int c=r+1;
-    int temp;
+    int temp1;
+    for(int k=0; k<rem_edges.size(); k+=2){
+        temp1 = new_Ver(ver, rem_edges[k], rem_edges[k+1]);
+        if(temp1 == -1){
+            arr[rem_edges[k]][rem_edges[k+1]] = 0;
+            rem_edges.erase(rem_edges.begin()+k, rem_edges.begin()+k+2);
+        }
+
+    }
+    int temp2;
     for(int j=0; j<rem_edges.size(); j+=2){
-        if(arr[rem_edges[j]][rem_edges[j+1]] < arr[rem_edges[r]][rem_edges[c]]){
-            temp = new_Ver(ver, rem_edges[j], rem_edges[j+1]);
-            if(temp != -1){
-                r = j;
-                curr_Vertex = temp;
-            }
-            else{
-                rem_edges.erase(rem_edges.begin()+j, rem_edges.begin()+1+j);
-                j-=2;
-            }
+        temp2 = new_Ver(ver, rem_edges[j], rem_edges[j+1]);
+        if(arr[rem_edges[j]][rem_edges[j+1]] <= arr[rem_edges[r]][rem_edges[r+1]]){
+            r = j;
+            curr_Vertex = temp2;
         }
-        else if(j+2 >=rem_edges.size() && r==0){
-            temp = new_Ver(ver, rem_edges[r], rem_edges[c]);
-            if(temp != -1){
-                curr_Vertex = temp;
-            }
-            else{
-                rem_edges.erase(rem_edges.begin()+r, rem_edges.begin()+ c);
-                j-=2;
-            }
-        }
+
     }
     edges.push_back(rem_edges[r]);
-    edges.push_back(rem_edges[c]);
+    edges.push_back(rem_edges[r+1]);
+    rem_edges.erase(rem_edges.begin()+r, rem_edges.begin()+r+2);
 }
-bool graph::SearchEdge(int ver1, int ver2, vector<int>& rem_edge){
-    for(int i=0; i<rem_edge.size()/2; i+=2){
+bool graph::SearchEdge(int ver1, int ver2,vector<int>& rem_edge, vector<int>& edge){
+    for(int k=0; k<edge.size(); k+=2){
+        if(edge[k] == ver1 && edge[k+1] == ver2){
+            return true;
+        }
+    }
+    for(int i=0; i<rem_edge.size(); i+=2){
         if(rem_edge[i] == ver1 && rem_edge[i+1] == ver2){
             return true;
         }
     }
     return false;
 }
-void graph::Modifyrem_edges(vector<int>& rem_edges, vector<int>& edges){
-    for(int i=0; i<rem_edges.size(); i+=2){
-        for(int j=0; j<edges.size(); j+=2){
-            if(rem_edges[i] == edges[j] && rem_edges[i+1] == edges[j+1]){
-                rem_edges.erase(rem_edges.begin()+i, rem_edges.begin()+1+i);
-            }
-        }
-    }
-}
-void graph::InitializingEdges(vector<int>& rem_edges, int curr_Vertex, int e){
+void graph::InitializingEdges(vector<int>& rem_edges,vector<int>& edges,int curr_Vertex, int e){
     for(int i=0; i<e; i++){
-        if(i <e/2 && arr[curr_Vertex][i] != 0 && !SearchEdge(curr_Vertex,i, rem_edges)){
+        if(i <e/2 && arr[curr_Vertex][i] != 0 && !SearchEdge(curr_Vertex,i,rem_edges,edges)){
             rem_edges.push_back(curr_Vertex);
             rem_edges.push_back(i);
         }
-        else if(i >= e/2 && arr[i-e/2][curr_Vertex] != 0 && !SearchEdge(i-e/2,curr_Vertex, rem_edges)){
-            rem_edges.push_back(i);
+        else if(i >= e/2 && arr[i-e/2][curr_Vertex] != 0 && !SearchEdge(i-e/2,curr_Vertex,rem_edges,edges)){
+            rem_edges.push_back(i-e/2);
             rem_edges.push_back(curr_Vertex);
         }
     }
@@ -213,8 +194,6 @@ bool graph::SearchVer(vector<int>& arr, int curr_vertex){
     }
     return false;
 }
-
-
 
 graph::~graph(){
     for(int i=0; i<v; i++){
