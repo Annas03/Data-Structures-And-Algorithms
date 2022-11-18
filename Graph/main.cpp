@@ -7,8 +7,8 @@ using namespace std;
 int main(){
     // Initializing graph in 2DArray:
     graph g("sample.txt");
-    g.display();
-
     // Prims Alogrithms
+    g.prims_MST();
+    g.display();
     return 0;
 }
